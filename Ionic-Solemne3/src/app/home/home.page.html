@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Lista de Datos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding"> <!-- Añade ion-padding para más espacio -->
+  <div class="ion-text-center"> <!-- Contenedor para centrar -->
+    <ion-button (click)="callApi()">Call API</ion-button>
+  </div>
+
+  <ion-list *ngIf="datos.length > 0">
+    <ion-item *ngFor="let item of datos">
+      <ion-label>
+        <h2>{{ item.nombre }} {{ item.apellido1 }} {{ item.apellido2 }}</h2>
+        <p>Ciudad: {{ item.ciudad }}</p>
+        <p>Categoría: {{ item.categoria }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <p *ngIf="datos.length === 0">No hay datos disponibles.</p>
+</ion-content>

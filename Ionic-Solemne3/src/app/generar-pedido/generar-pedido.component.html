@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Generar Pedido</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>Crear un nuevo pedido</h2>
+
+  <form (submit)="crearPedido($event)">
+    <ion-item>
+      <ion-label position="floating">Total</ion-label>
+      <ion-input [(ngModel)]="pedido.total" name="total" type="number" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Fecha</ion-label>
+      <ion-input [(ngModel)]="pedido.fecha" name="fecha" readonly></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">ID Cliente</ion-label>
+      <ion-input [(ngModel)]="pedido.cliente" name="cliente" type="number" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">ID Comercial</ion-label>
+      <ion-input [(ngModel)]="pedido.comercial" name="comercial" type="number" required></ion-input>
+    </ion-item>
+
+    <!-- Nuevo campo de correo electrónico -->
+    <ion-item>
+      <ion-label position="floating">Correo Electrónico</ion-label>
+      <ion-input [(ngModel)]="correoElectronico" name="correoElectronico" type="email" required></ion-input>
+    </ion-item>
+
+    <div class="ion-padding">
+      <ion-button type="submit" expand="block">Crear Pedido</ion-button>
+    </div>
+  </form>
+
+  <!-- Mensaje de error si hay un problema al generar el pedido -->
+  <div *ngIf="errorMessage" class="ion-text-center ion-padding">
+    <ion-text color="danger">{{ errorMessage }}</ion-text>
+  </div>
+</ion-content>

@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registro de Usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>¡Bienvenido! Regístrate a continuación</h2>
+
+  <form (submit)="registerUser($event)">
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input [(ngModel)]="user.nombre" name="nombre" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Apellido</ion-label>
+      <ion-input [(ngModel)]="user.apellido1" name="apellido1" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Comisión</ion-label>
+      <ion-input [(ngModel)]="user.comision" name="comision" type="number" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input [(ngModel)]="user.password" type="password" name="password" required></ion-input>
+    </ion-item>
+
+    <div class="ion-padding">
+      <ion-button type="submit" expand="block">Registrarse</ion-button>
+    </div>
+  </form>
+
+  <!-- Mensaje de error si hay un problema en el registro -->
+  <div *ngIf="errorMessage" class="ion-text-center ion-padding">
+    <ion-text color="danger">{{ errorMessage }}</ion-text>
+  </div>
+
+
+ <!-- Botón para regresar a la vista anterior -->
+ <div class="ion-padding">
+  <ion-button expand="block" (click)="goBack()">Regresar</ion-button>
+</div>
+
+<div *ngIf="errorMessage" class="ion-text-center ion-padding">
+  <ion-text color="danger">{{ errorMessage }}</ion-text>
+</div>
+</ion-content>

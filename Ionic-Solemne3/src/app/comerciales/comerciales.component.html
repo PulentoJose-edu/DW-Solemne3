@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Comerciales</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>Lista de Comerciales</h2>
+
+  <!-- Botón para hacer la llamada a la API -->
+  <div class="ion-text-center ion-padding">
+    <ion-button (click)="fetchComerciales()">API Call</ion-button>
+  </div>
+
+  <!-- Lista de comerciales -->
+  <ion-list *ngIf="comerciales.length > 0">
+    <ion-item *ngFor="let comercial of comerciales">
+      <ion-label>
+        <h2>Comercial #{{ comercial.id }}</h2>
+        <p>Nombre: {{ comercial.nombre }}</p>
+        <p>Teléfono: {{ comercial.telefono }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Mensaje si no hay comerciales o si hay un error -->
+  <p *ngIf="comerciales.length === 0 && !errorMessage">No hay comerciales disponibles. Presiona "API Call" para obtener los datos.</p>
+  <p *ngIf="errorMessage" class="ion-text-center ion-padding">{{ errorMessage }}</p>
+</ion-content>
