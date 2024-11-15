@@ -11,6 +11,7 @@ from .models import Comercial
 from django.conf import settings
 import json
 import bcrypt
+from django.core.mail import send_mail
 
 class ClienteListCreate(generics.ListCreateAPIView):
     queryset = Cliente.objects.all()
@@ -81,3 +82,16 @@ def get_comercial_id(request):
     else:
         return JsonResponse({'error': 'Método no permitido'}, status=405)
 
+class EmailAPIView(APIView):
+    def post(self, resquest):
+        try: 
+            cliente_nombre = Cliente.objects.get(id= resquest.data.get('cliente'))    
+            comercial_nombre = Comercial.objects.get(id= resquest.data.get('comercial'))
+            to_email = resquest.data.get('correoElectronico')
+            subject = "Pedido de compra"
+            message = f"Este es un resumen de compra\n Nombre: {cliente_nombre.nombre}\n Comercial: {comercial_nombre.nombre}\n Fecha: {resquest.data.get('fecha')}\n Total: {resquest.data.get('total')}\n"
+            send_mail(subject, message, None, [to_email])
+            return Response({'message' : 'Correo Enviado con Exito'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            error_message = str(e)
+            return Response({'message': error_message}, status=status.HTTP_400_BAD_REQUEST)

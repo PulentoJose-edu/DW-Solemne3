@@ -18,8 +18,8 @@ export class GenerarPedidoComponent {
     fecha: new Date().toISOString().slice(0, 10), // Formato YYYY-MM-DD
     cliente: '',
     comercial: '',
+    correoElectronico: ''
   };
-  correoElectronico: string = ''; // Nueva propiedad para el correo electrónico
   errorMessage: string = '';
 
   constructor(private location: Location, private alertController: AlertController) {}
@@ -27,10 +27,7 @@ export class GenerarPedidoComponent {
   async crearPedido(event: Event) {
     event.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/pedidos/', {
-        ...this.pedido,
-        correoElectronico: this.correoElectronico // Añade el correo en la solicitud
-      });
+      const response = await axios.post('http://127.0.0.1:8000/api/pedidos/', this.pedido);
       console.log('Pedido creado exitosamente:', response.data);
       const alert = await this.alertController.create({
         header: 'Éxito',
@@ -38,6 +35,8 @@ export class GenerarPedidoComponent {
         buttons: ['OK']
       });
       await alert.present();
+      const responseEmail = await axios.post('http://127.0.0.1:8000/api/send-email/', this.pedido);
+      console.log('Correo enviado exitosamente:', responseEmail.data);
     } catch (error) {
       console.error('Error al crear el pedido:', error);
       const alert = await this.alertController.create({
@@ -52,5 +51,10 @@ export class GenerarPedidoComponent {
   goBack() {
     this.location.back();
   }
+
+  comprobacionIdCliente(){
+    this.pedido
+  }
+
 }
 
