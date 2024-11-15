@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
+import { Location } from '@angular/common';
 import axios from 'axios';
 
 @Component({
@@ -14,7 +15,7 @@ export class ComercialesComponent {
   comerciales: any[] = [];
   errorMessage: string = '';
 
-  constructor() {}
+  constructor(private location: Location) {}
 
   // Método para obtener los comerciales desde la API
   async fetchComerciales() {
@@ -26,5 +27,9 @@ export class ComercialesComponent {
       this.errorMessage = 'Error al obtener los comerciales. Verifique la conexión con la API.';
       console.error('Error al llamar a la API', error);
     }
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

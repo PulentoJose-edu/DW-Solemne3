@@ -43,4 +43,8 @@
   <div *ngIf="errorMessage" class="ion-text-center ion-padding">
     <ion-text color="danger">{{ errorMessage }}</ion-text>
   </div>
+
+  <div class="ion-padding">
+    <ion-button expand="block" (click)="goBack()">Regresar</ion-button>
+  </div>
 </ion-content>

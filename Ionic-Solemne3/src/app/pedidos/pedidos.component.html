@@ -27,4 +27,8 @@
   <!-- Mensaje si no hay pedidos o si hay un error -->
   <p *ngIf="pedidos.length === 0 && !errorMessage">No hay pedidos disponibles. Presiona "API Call" para obtener los datos.</p>
   <p *ngIf="errorMessage" class="ion-text-center ion-padding">{{ errorMessage }}</p>
+
+  <div class="ion-padding">
+    <ion-button expand="block" (click)="goBack()">Regresar</ion-button>
+  </div>
 </ion-content>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
+import { Location } from '@angular/common';
 import axios from 'axios';
 
 @Component({
@@ -13,7 +14,7 @@ import axios from 'axios';
 export class HomePage {
   datos: any[] = []; // Propiedad para almacenar los datos de la API
 
-  constructor() {}
+  constructor(private location: Location) {}
 
   async callApi() {
     try {
@@ -23,5 +24,8 @@ export class HomePage {
     } catch (error) {
       console.error('Error calling API: ', error);
     }
+  }
+  goBack(){
+    this.location.back();
   }
 }

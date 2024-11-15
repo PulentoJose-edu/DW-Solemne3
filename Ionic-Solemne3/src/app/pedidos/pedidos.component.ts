@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
+import { Location } from '@angular/common';
 import axios from 'axios';
 
 @Component({
@@ -14,7 +15,7 @@ export class PedidosComponent {
   pedidos: any[] = [];
   errorMessage: string = '';
 
-  constructor() {}
+  constructor(private location: Location) {}
 
   // Método para obtener los pedidos desde la API al presionar el botón
   async fetchPedidos() {
@@ -27,4 +28,8 @@ export class PedidosComponent {
       console.error('Error al llamar a la API', error);
     }
   }
+  goBack() {
+    this.location.back();
+  }
+  
 }
