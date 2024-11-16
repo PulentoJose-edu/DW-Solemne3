@@ -15,6 +15,7 @@ import axios, { AxiosError } from 'axios';
 export class WelcomeComponent {
   username: string = '';
   password: string = '';
+  idComercial: any[] = [];
   errorMessage: string = '';
 
   constructor(private router: Router, private alertController: AlertController) {}
@@ -29,13 +30,15 @@ export class WelcomeComponent {
 
       // Send a POST request to the backend API with Axios
       const response = await axios.post('http://127.0.0.1:8000/api/comercial/login/', loginData);
+      const idComercia = await axios.post('http://127.0.0.1:8000/api/get_comercial_id/', loginData);
 
      
       // Check if login was successful
       if (response.data.success) {
-        //this.router.navigate(['/intermediate']);  
-        
-        this.router.navigate(['/intermediate', this.username]); // Navigate to intermediate component on success
+        //this.router.navigate(['/intermediate']); 
+        this.idComercial = idComercia.data.id;
+        console.log(this.idComercial);
+        this.router.navigate(['/intermediate', this.idComercial]); // Navigate to intermediate component on success
 
       } else {
         this.showAlert('Credenciales incorrectas. Inténtalo nuevamente.');

@@ -38,11 +38,11 @@ export class IntermediateComponent {
 
   //Metodo para redirigir a generar pedido
   goToGenerarPedido(){
-    this.router.navigate(['/generar-pedido'])
+    this.router.navigate(['/generar-pedido', this.nombre])
   }
 
   goToPedidosCliente(){
-    this.router.navigate(['/pedidos-cliente'])
+    this.router.navigate(['/pedidos-cliente', this.nombre],)
   }
 
 }

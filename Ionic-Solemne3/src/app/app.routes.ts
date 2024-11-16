@@ -7,7 +7,7 @@ export const routes: Routes = [
   { path: 'pedidos', loadComponent: () => import('./pedidos/pedidos.component').then(m => m.PedidosComponent) },
   { path: 'comerciales', loadComponent: () => import('./comerciales/comerciales.component').then(m => m.ComercialesComponent) },
   { path: 'user-register', loadComponent: () => import('./user-register/user-register.component').then(m => m.UserRegisterComponent) },
-  { path: 'generar-pedido', loadComponent: () => import('./generar-pedido/generar-pedido.component').then(m => m.GenerarPedidoComponent) },
-  { path: 'pedidos-cliente', loadComponent: () => import('./pedidos-cliente/pedidos-cliente.component').then(m => m.PedidosClienteComponent)},
+  { path: 'generar-pedido/:nombre', loadComponent: () => import('./generar-pedido/generar-pedido.component').then(m => m.GenerarPedidoComponent) },
+  { path: 'pedidos-cliente/:nombre', loadComponent: () => import('./pedidos-cliente/pedidos-cliente.component').then(m => m.PedidosClienteComponent)},
   { path: '', redirectTo: 'welcome', pathMatch: 'full' },
 ];
