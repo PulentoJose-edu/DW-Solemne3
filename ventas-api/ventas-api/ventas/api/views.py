@@ -95,3 +95,4 @@ class EmailAPIView(APIView):
         except Exception as e:
             error_message = str(e)
             return Response({'message': error_message}, status=status.HTTP_400_BAD_REQUEST)
+        
