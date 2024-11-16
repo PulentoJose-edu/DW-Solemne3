@@ -41,4 +41,8 @@ export class IntermediateComponent {
     this.router.navigate(['/generar-pedido'])
   }
 
+  goToPedidosCliente(){
+    this.router.navigate(['/pedidos-cliente'])
+  }
+
 }

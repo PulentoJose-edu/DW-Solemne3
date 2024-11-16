@@ -8,5 +8,6 @@ export const routes: Routes = [
   { path: 'comerciales', loadComponent: () => import('./comerciales/comerciales.component').then(m => m.ComercialesComponent) },
   { path: 'user-register', loadComponent: () => import('./user-register/user-register.component').then(m => m.UserRegisterComponent) },
   { path: 'generar-pedido', loadComponent: () => import('./generar-pedido/generar-pedido.component').then(m => m.GenerarPedidoComponent) },
+  { path: 'pedidos-cliente', loadComponent: () => import('./pedidos-cliente/pedidos-cliente.component').then(m => m.PedidosClienteComponent)},
   { path: '', redirectTo: 'welcome', pathMatch: 'full' },
 ];
