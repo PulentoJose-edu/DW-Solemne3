@@ -42,7 +42,7 @@ export class IntermediateComponent {
   }
 
   goToPedidosCliente(){
-    this.router.navigate(['/pedidos-cliente'])
+    this.router.navigate(['/pedidos-cliente', this.nombre],)
   }
 
 }
