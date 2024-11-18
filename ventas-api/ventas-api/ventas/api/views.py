@@ -7,10 +7,7 @@ from django.contrib.auth.hashers import check_password
 from .models import Cliente, Comercial, Pedido
 from .serializers import ClienteSerializer, ComercialSerializer, PedidoSerializer
 from django.http import JsonResponse
-from .models import Comercial
-from django.conf import settings
 import json
-import bcrypt
 from django.core.mail import send_mail
 
 class ClienteListCreate(generics.ListCreateAPIView):

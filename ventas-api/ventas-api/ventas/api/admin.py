@@ -13,4 +13,4 @@ class ComercialAdmin(admin.ModelAdmin):
 class PedidoAdmin(admin.ModelAdmin):
     list_display = ('id', 'total', 'fecha', 'cliente', 'comercial')
     
-    
+# 
