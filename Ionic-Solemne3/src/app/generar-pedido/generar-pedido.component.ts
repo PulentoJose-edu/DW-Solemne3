@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // Importa FormsModule para ngModel
-import axios from 'axios';
 import { IonicModule, AlertController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { Location } from '@angular/common'; // Importar Location
 import { ActivatedRoute, Router } from '@angular/router';
+import { VentasServiceService } from '../ventas-service.service'; // Import the service
 
 @Component({
   selector: 'app-generar-pedido',
@@ -24,7 +24,13 @@ export class GenerarPedidoComponent {
   errorMessage: string = '';
   nombre: string = ''; 
 
-  constructor(private location: Location, private alertController: AlertController, private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private location: Location,
+    private alertController: AlertController,
+    private router: Router,
+    private route: ActivatedRoute,
+    private ventasService: VentasServiceService // Inject the service
+  ) {}
 
   ngOnInit() {
     this.nombre = this.route.snapshot.paramMap.get('nombre') || ''; // Obtener el parámetro como string
@@ -50,8 +56,8 @@ export class GenerarPedidoComponent {
       }
     
       // Continuar con la creación del pedido si son iguales
-      const response = await axios.post('http://127.0.0.1:8000/api/pedidos/', this.pedido);
-      console.log('Pedido creado exitosamente:', response.data);
+      const response = await this.ventasService.crearPedido(this.pedido);
+      console.log('Pedido creado exitosamente:', response);
     
       const alert = await this.alertController.create({
         header: 'Éxito',
@@ -61,10 +67,10 @@ export class GenerarPedidoComponent {
       await alert.present();
     
       // Enviar correo
-      const responseEmail = await axios.post('http://127.0.0.1:8000/api/send-email/', this.pedido);
-      console.log('Correo enviado exitosamente:', responseEmail.data);
+      const responseEmail = await this.ventasService.enviarCorreo(this.pedido);
+      console.log('Correo enviado exitosamente:', responseEmail);
     
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error al procesar el pedido o enviar el correo:', error);
       const alert = await this.alertController.create({
         header: 'Error',
@@ -82,6 +88,4 @@ export class GenerarPedidoComponent {
   comprobacionIdCliente(){
     this.pedido
   }
-
 }
-

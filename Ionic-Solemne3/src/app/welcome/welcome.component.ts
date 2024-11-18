@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { IonicModule, AlertController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import axios, { AxiosError } from 'axios';
+import { VentasServiceService } from '../ventas-service.service'; // Import the service
+import { AxiosError } from 'axios';
 
 @Component({
   selector: 'app-welcome',
@@ -18,36 +19,29 @@ export class WelcomeComponent {
   idComercial: any[] = [];
   errorMessage: string = '';
 
-  constructor(private router: Router, private alertController: AlertController) {}
+  constructor(
+    private router: Router,
+    private alertController: AlertController,
+    private ventasService: VentasServiceService // Inject the service
+  ) {}
 
-  // Method to make login request to the backend API using Axios
+  // Method to make login request to the backend API using the service
   async login() {
     try {
-      const loginData = {
-        nombre: this.username,
-        password: this.password
-      };
+      const loginResponse = await this.ventasService.login(this.username, this.password);
+      const idComercialResponse = await this.ventasService.getComercialId(this.username, this.password);
 
-      // Send a POST request to the backend API with Axios
-      const response = await axios.post('http://127.0.0.1:8000/api/comercial/login/', loginData);
-      const idComercia = await axios.post('http://127.0.0.1:8000/api/get_comercial_id/', loginData);
-
-     
       // Check if login was successful
-      if (response.data.success) {
-        //this.router.navigate(['/intermediate']); 
-        this.idComercial = idComercia.data.id;
+      if (loginResponse.success) {
+        this.idComercial = idComercialResponse.id;
         console.log(this.idComercial);
         this.router.navigate(['/intermediate', this.idComercial]); // Navigate to intermediate component on success
-
       } else {
         this.showAlert('Credenciales incorrectas. Inténtalo nuevamente.');
       }
     } catch (error: unknown) {
-      // Cast error as AxiosError if it's an instance of AxiosError
       const axiosError = error as AxiosError;
 
-        console.log(axiosError.response)
       // Handle error responses
       if (axiosError.response) {
         // Specific error handling based on response status
