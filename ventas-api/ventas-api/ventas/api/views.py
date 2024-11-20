@@ -4,13 +4,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import check_password
-from .models import Cliente, Comercial, Pedido
-from .serializers import ClienteSerializer, ComercialSerializer, PedidoSerializer
+from .models import Cliente, Comercial, Pedido, Producto, PedidoProducto
+from .serializers import ClienteSerializer, ComercialSerializer, PedidoSerializer, PedidoProductoSerializer, ProductoSerializer
 from django.http import JsonResponse
-from .models import Comercial
-from django.conf import settings
 import json
-import bcrypt
 from django.core.mail import send_mail
 
 class ClienteListCreate(generics.ListCreateAPIView):
@@ -28,6 +25,21 @@ class ComercialListCreate(generics.ListCreateAPIView):
 class ComercialRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comercial.objects.all()
     serializer_class = ComercialSerializer
+class ProductoListCreate(generics.ListCreateAPIView):
+    queryset = Producto.objects.all()
+    serializer_class = ProductoSerializer
+
+class ProductoRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Producto.objects.all()
+    serializer_class = ProductoSerializer
+    
+class PedidoProductoListCreate(generics.ListCreateAPIView):
+    queryset = PedidoProducto.objects.all()
+    serializer_class = PedidoProductoSerializer
+
+class PedidoProductoRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    queryset = PedidoProducto.objects.all()
+    serializer_class = PedidoProductoSerializer
 
 class PedidoListCreate(generics.ListCreateAPIView):
     queryset = Pedido.objects.all()
@@ -36,7 +48,7 @@ class PedidoListCreate(generics.ListCreateAPIView):
 class PedidoRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Pedido.objects.all()
     serializer_class = PedidoSerializer
-    
+
 class ComercialLogin(APIView):
     def post(self, request):
         nombre = request.data.get('nombre')
@@ -49,6 +61,7 @@ class ComercialLogin(APIView):
         try:
             # Busca el comercial por el nombre
             comercial = Comercial.objects.get(nombre=nombre)
+            print(comercial)
             
             # Verifica la contraseña
             if comercial.check_password(password):

@@ -33,11 +33,28 @@ class Comercial(models.Model):
         # Verifica la contraseña
         return bcrypt.checkpw(raw_password.encode('utf-8'), self.password.encode('utf-8'))
 
+class Producto(models.Model):
+    nombre = models.CharField(max_length=100)
+    precio = models.FloatField()
+    cantidad_disponible = models.PositiveIntegerField()
+    
+    def __str__(self):
+        return self.nombre
+
+class PedidoProducto(models.Model):
+    pedido = models.ForeignKey('Pedido', on_delete=models.CASCADE)
+    producto = models.ForeignKey('Producto', on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField()
+
 class Pedido(models.Model):
-    total = models.FloatField()
+    productos = models.ManyToManyField(Producto, through='PedidoProducto')
+    total = models.FloatField(default=0)
     fecha = models.DateField()
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     comercial = models.ForeignKey(Comercial, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"Pedido {self.id} - Total: {self.total}"
+    
+    def calcular_total(self):
+        self.total = sum(
+            [pp.producto.precio * pp.cantidad for pp in self.pedidoproducto_set.all()]
+        )
+        self.save()
