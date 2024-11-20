@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ClienteListCreate, ClienteRetrieveUpdateDestroy, ComercialListCreate, ComercialRetrieveUpdateDestroy, PedidoListCreate, PedidoRetrieveUpdateDestroy, ComercialLogin, get_comercial_id, EmailAPIView
+from .views import ClienteListCreate, ClienteRetrieveUpdateDestroy, ProductoRetrieveUpdateDestroy , ComercialListCreate, ComercialRetrieveUpdateDestroy, PedidoListCreate, PedidoRetrieveUpdateDestroy, ComercialLogin, get_comercial_id, EmailAPIView, ProductoListCreate, PedidoProductoListCreate, PedidoProductoRetrieveUpdateDestroy
 
 urlpatterns = [
     path('clientes/', ClienteListCreate.as_view(), name='cliente-list-create'),
@@ -9,6 +9,9 @@ urlpatterns = [
     path('pedidos/', PedidoListCreate.as_view(), name='pedido-list-create'),
     path('pedidos/<int:pk>/', PedidoRetrieveUpdateDestroy.as_view(), name='pedido-detail'),
     path('comercial/login/', ComercialLogin.as_view(), name='comercial-login'),
-    path('get_comercial_id/', get_comercial_id, name='get_comercial_id'),
-    path('send-email/', EmailAPIView.as_view(), name= 'send-email')
+    path('get_comercial_id/', get_comercial_id, name='get-comercial-id'),
+    path('send-email/', EmailAPIView.as_view(), name= 'send-email'),
+    path('productos/', ProductoListCreate.as_view(), name='producto-list-create'),
+    path('productos/<int:pk>/', ProductoRetrieveUpdateDestroy.as_view(), name='producto-detail'),
+    path('pedido-productos/', PedidoProductoListCreate.as_view(), name= 'pedido-producto-list-create' )
 ]

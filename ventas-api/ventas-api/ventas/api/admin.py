@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Cliente, Comercial, Pedido
+from .models import Cliente, Comercial, Pedido, Producto
 
 @admin.register(Cliente)
 class ClienteAdmin(admin.ModelAdmin):
@@ -9,8 +9,4 @@ class ClienteAdmin(admin.ModelAdmin):
 class ComercialAdmin(admin.ModelAdmin):
     list_display = ('nombre', 'apellido1', 'apellido2', 'comision')
 
-@admin.register(Pedido)
-class PedidoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'total', 'fecha', 'cliente', 'comercial')
-    
-# 
+
