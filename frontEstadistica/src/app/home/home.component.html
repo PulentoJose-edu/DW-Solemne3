@@ -1,0 +1,17 @@
+<main class="main">
+    <div>
+      <h2>Productos</h2>
+      <ul>
+        <li *ngFor="let producto of pedidos">
+          {{ producto.nombre }} - ${{ producto.precio }} ({{ producto.cantidad_disponible }})
+        </li>
+      </ul>
+      <form (ngSubmit)="crearProducto($event)">
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+        <input [(ngModel)]="productos.nombre" name="nombre" placeholder="Nombre" required />
+        <input [(ngModel)]="productos.precio" name="precio" type="number" placeholder="Precio" required />
+        <input [(ngModel)]="productos.cantidad_disponible" name="cantidad" type="number" placeholder="Cantidad" required />
+        <button type="submit">Agregar Producto</button>
+      </form>
+    </div>
+  </main>

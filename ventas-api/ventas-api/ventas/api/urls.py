@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ClienteListCreate, ClienteRetrieveUpdateDestroy, ProductoRetrieveUpdateDestroy , ComercialListCreate, ComercialRetrieveUpdateDestroy, PedidoListCreate, PedidoRetrieveUpdateDestroy, ComercialLogin, get_comercial_id, EmailAPIView, ProductoListCreate, PedidoProductoListCreate, PedidoProductoRetrieveUpdateDestroy
+from .views import ClienteListCreate, ClienteRetrieveUpdateDestroy, ProductoRetrieveUpdateDestroy , ComercialListCreate, ComercialRetrieveUpdateDestroy, PedidoListCreate, PedidoRetrieveUpdateDestroy, ComercialLogin, get_comercial_id, EmailAPIView, ProductoListCreate, PedidoProductoListCreate, PedidoProductoRetrieveUpdateDestroy, ValidacionInventario
 
 urlpatterns = [
     path('clientes/', ClienteListCreate.as_view(), name='cliente-list-create'),
@@ -13,5 +13,6 @@ urlpatterns = [
     path('send-email/', EmailAPIView.as_view(), name= 'send-email'),
     path('productos/', ProductoListCreate.as_view(), name='producto-list-create'),
     path('productos/<int:pk>/', ProductoRetrieveUpdateDestroy.as_view(), name='producto-detail'),
-    path('pedido-productos/', PedidoProductoListCreate.as_view(), name= 'pedido-producto-list-create' )
+    path('pedido-productos/', PedidoProductoListCreate.as_view(), name= 'pedido-producto-list-create' ),
+    path('validacion/', ValidacionInventario.as_view(), name= 'validacion' )
 ]

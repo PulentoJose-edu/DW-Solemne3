@@ -39,7 +39,12 @@ class Producto(models.Model):
     cantidad_disponible = models.PositiveIntegerField()
     
     def __str__(self):
-        return self.nombre
+        return f"{self.nombre}"
+    
+    def restarCantidad(self, cantidad):
+        self.cantidad_disponible -= cantidad
+        self.save()
+
 
 class PedidoProducto(models.Model):
     pedido = models.ForeignKey('Pedido', on_delete=models.CASCADE)
@@ -51,7 +56,9 @@ class Pedido(models.Model):
     total = models.FloatField(default=0)
     fecha = models.DateField()
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    comercial = models.ForeignKey(Comercial, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f"{self.id}"
     
     def calcular_total(self):
         self.total = sum(

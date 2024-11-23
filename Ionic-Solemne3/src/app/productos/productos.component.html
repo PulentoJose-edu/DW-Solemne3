@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Pedidos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>Lista de Pedidos</h2>
+
+  <!-- Botón para hacer la llamada a la API -->
+  <div class="ion-text-center ion-padding">
+    <ion-button (click)="fetchProductos()">API Call</ion-button>
+  </div>
+
+  <!-- Lista de pedidos -->
+  <ion-list *ngIf="productos.length > 0">
+    <ion-item *ngFor="let producto of productos">
+      <ion-label>
+        <h2>{{ producto.nombre }}</h2>
+        <p>Precio: {{ producto.precio }}</p>
+        <p>Cantidad: {{ producto.cantidad_disponible }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Mensaje si no hay pedidos o si hay un error -->
+  <p *ngIf="productos.length === 0 && !errorMessage">No hay pedidos disponibles. Presiona "API Call" para obtener los datos.</p>
+  <p *ngIf="errorMessage" class="ion-text-center ion-padding">{{ errorMessage }}</p>
+
+  <div class="ion-padding">
+    <ion-button expand="block" (click)="goBack()">Regresar</ion-button>
+  </div>
+</ion-content>

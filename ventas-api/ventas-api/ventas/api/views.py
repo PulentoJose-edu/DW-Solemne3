@@ -96,7 +96,7 @@ def get_comercial_id(request):
         return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 class EmailAPIView(APIView):
-    def post(self, resquest):
+    def post(resquest):
         try: 
             cliente_nombre = Cliente.objects.get(id= resquest.data.get('cliente'))    
             comercial_nombre = Comercial.objects.get(id= resquest.data.get('comercial'))
@@ -109,3 +109,26 @@ class EmailAPIView(APIView):
             error_message = str(e)
             return Response({'message': error_message}, status=status.HTTP_400_BAD_REQUEST)
         
+
+class ValidacionInventario(APIView):
+    def post(self, request):
+        # Obtiene los datos enviados a la API
+        id = request.data.get('id')  # ID del producto
+        precio = request.data.get('precio')
+        cantidad = request.data.get('cantidad')  # Cantidad solicitada
+
+        try:
+            # Busca el producto por ID
+            producto = Producto.objects.get(id=id)
+            pedido = Pedido.objects.get(id=id)
+            pedidoproducto = PedidoProducto.objects.get(id=pedido)
+        except Producto.DoesNotExist:
+            return Response({"error": "Producto no encontrado."},status=status.HTTP_404_NOT_FOUND,)
+
+        # Verifica si hay suficiente inventario
+        if producto.cantidad_disponible >= int(cantidad):
+            producto.restarCantidad(int(cantidad))
+            pedido.calcular_total()
+            return Response({"mensaje": "Hay suficiente inventario."},status=status.HTTP_200_OK,)
+        else:
+            return Response({"error": "Inventario insuficiente."},status=status.HTTP_400_BAD_REQUEST,)

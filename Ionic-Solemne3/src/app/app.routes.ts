@@ -9,5 +9,6 @@ export const routes: Routes = [
   { path: 'user-register', loadComponent: () => import('./user-register/user-register.component').then(m => m.UserRegisterComponent) },
   { path: 'generar-pedido/:nombre', loadComponent: () => import('./generar-pedido/generar-pedido.component').then(m => m.GenerarPedidoComponent) },
   { path: 'pedidos-cliente/:nombre', loadComponent: () => import('./pedidos-cliente/pedidos-cliente.component').then(m => m.PedidosClienteComponent)},
+  { path: 'productos', loadComponent: () => import('./productos/productos.component').then(m => m.ProductosComponent)},
   { path: '', redirectTo: 'welcome', pathMatch: 'full' },
 ];

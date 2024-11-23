@@ -45,4 +45,8 @@ export class IntermediateComponent {
     this.router.navigate(['/pedidos-cliente', this.nombre],)
   }
 
+  
+  goToProducto(){
+    this.router.navigate(['/productos'],)
+  }
 }
