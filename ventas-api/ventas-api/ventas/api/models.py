@@ -56,6 +56,7 @@ class Pedido(models.Model):
     total = models.FloatField(default=0)
     fecha = models.DateField()
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    comercial = models.ForeignKey(Comercial, on_delete=models.CASCADE)
     
     def __str__(self):
         return f"{self.id}"

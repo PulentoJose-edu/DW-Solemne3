@@ -1,0 +1,9 @@
+.list-group-item {
+    font-size: 1.1rem;
+  }
+  .mb-3, .mb-4 {
+    margin-bottom: 20px;
+  }
+  .text-center {
+    color: #888;
+  }

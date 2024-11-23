@@ -28,7 +28,7 @@ export class IntermediateComponent {
   }
 
   goToPedidos(){
-    this.router.navigate(['/pedidos'])
+    this.router.navigate(['/pedidos']);
   }
 
  // Método para redirigir a Comerciales
@@ -36,17 +36,17 @@ export class IntermediateComponent {
   this.router.navigate(['/comerciales']);
   }
 
+  goToProducto(){
+    this.router.navigate(['/productos'],);
+  }
   //Metodo para redirigir a generar pedido
   goToGenerarPedido(){
-    this.router.navigate(['/generar-pedido', this.nombre])
+    this.router.navigate(['/generar-pedido', this.nombre]);
   }
 
   goToPedidosCliente(){
-    this.router.navigate(['/pedidos-cliente', this.nombre],)
+    this.router.navigate(['/pedidos-cliente', this.nombre],);
   }
 
   
-  goToProducto(){
-    this.router.navigate(['/productos'],)
-  }
 }

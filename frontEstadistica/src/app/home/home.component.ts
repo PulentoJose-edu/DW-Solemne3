@@ -24,13 +24,17 @@ export class HomeComponent {
   errorMessage: string = '';
 
   // Lista de productos (podrías cambiar `any` por un tipo definido si usas interfaces o clases)
-  pedidos: any[] = [];
+  listProducto: any[] = [];
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private pedidosProductosService: PedidoProductoService // Inyección del servicio
   ) {}
+
+  ngOnInit() {
+    this.fetchProductos()
+  }
 
   async crearProducto(event: Event) {
     event.preventDefault();
@@ -54,7 +58,7 @@ export class HomeComponent {
       };
 
       // Agregar el nuevo producto a la lista local
-      this.pedidos.push(response);
+      this.listProducto.push(response);
 
       // Limpiar mensajes de error
       this.errorMessage = '';
@@ -62,6 +66,16 @@ export class HomeComponent {
     } catch (error) {
       console.error('Error al crear el producto:', error);
       this.errorMessage = 'Hubo un error al crear el producto. Inténtalo nuevamente.';
+    }
+  }
+  async fetchProductos() {
+    try {
+      const response = await this.pedidosProductosService.fetchProductos();
+      this.listProducto = response;
+      this.errorMessage = ''; // Limpiar cualquier mensaje de error anterior
+    } catch (error: unknown) {
+      this.errorMessage = 'Error al obtener los pedidos. Verifique la conexión con la API.';
+      console.error('Error al llamar a la API', error);
     }
   }
 }

@@ -10,7 +10,7 @@ import { IonicModule } from '@ionic/angular';
   standalone: true,
   imports: [IonicModule, CommonModule]
 })
-export class ProductosComponent  implements OnInit {
+export class ProductosComponent  {
   productos: any[] = [];
   errorMessage: string = '';
 
@@ -18,9 +18,6 @@ export class ProductosComponent  implements OnInit {
     private location: Location,
     private ventasService: VentasServiceService // Inject the service
   ) {}
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
 
   // Método para obtener los pedidos desde la API al presionar el botón
   async fetchProductos() {

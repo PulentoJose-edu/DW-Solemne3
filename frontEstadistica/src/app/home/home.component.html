@@ -1,17 +1,58 @@
-<main class="main">
-    <div>
-      <h2>Productos</h2>
-      <ul>
-        <li *ngFor="let producto of pedidos">
-          {{ producto.nombre }} - ${{ producto.precio }} ({{ producto.cantidad_disponible }})
-        </li>
-      </ul>
+<div class="container mt-5">
+  <div class="row">
+    <!-- Formulario de producto -->
+    <div class="col-md-3">
+      <h3>Producto</h3>
       <form (ngSubmit)="crearProducto($event)">
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombre" [(ngModel)]="productos.nombre" name="nombre" placeholder="Nombre" required />
+        </div>
+        <div class="mb-3">
+          <label for="precio" class="form-label">Precio</label>
+          <input type="number" class="form-control" id="precio" [(ngModel)]="productos.precio" name="precio" type="number" placeholder="Precio" required />
+        </div>
+        <div class="mb-3">
+          <label for="cantidad" class="form-label">Cantidad</label>
+          <input type="number" class="form-control" id="cantidad" [(ngModel)]="productos.cantidad_disponible" name="cantidad" type="number" placeholder="Cantidad" required />
+        </div>
         <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-        <input [(ngModel)]="productos.nombre" name="nombre" placeholder="Nombre" required />
-        <input [(ngModel)]="productos.precio" name="precio" type="number" placeholder="Precio" required />
-        <input [(ngModel)]="productos.cantidad_disponible" name="cantidad" type="number" placeholder="Cantidad" required />
-        <button type="submit">Agregar Producto</button>
+        <button type="submit" class="btn btn-primary w-100">Guardar</button>
       </form>
     </div>
-  </main>
+
+    <!-- Lista de productos -->
+    <div class="col-md-3">
+      <h3>Lista de Productos</h3>
+      <ul class="list-group">
+        <!-- Ejemplo de producto -->
+        <li *ngFor="let producto of listProducto" class="list-group-item d-flex justify-content-between align-items-center">
+          {{ producto.nombre }} - ${{ producto.precio }} 
+          <span class="badge bg-primary rounded-pill">{{ producto.cantidad_disponible }}</span>
+        </li>
+        <!-- Aquí puedes agregar más productos dinámicamente -->
+      </ul>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="col-md-6">
+      <div class="row">
+        <!-- Gráfico de pastel -->
+        <div class="col-md-6">
+          <h3>Gráfico de Pastel</h3>
+          <div style="height: 250px; border: 1px dashed #ccc;">
+            <p class="text-center mt-5">Placeholder Gráfico de Pastel</p>
+          </div>
+        </div>
+
+        <!-- Gráfico de barras -->
+        <div class="col-md-6">
+          <h3>Gráfico de Barras</h3>
+          <div style="height: 250px; border: 1px dashed #ccc;">
+            <p class="text-center mt-5">Placeholder Gráfico de Barras</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
