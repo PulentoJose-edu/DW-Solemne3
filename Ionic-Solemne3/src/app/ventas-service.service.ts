@@ -77,19 +77,9 @@ export class VentasServiceService {
       throw axiosError;
     }
   }
-
-  async crearPedido(pedido: { total: string; fecha: string; cliente: string; comercial: string; correoElectronico: string }) {
+  async enviarCorreo(pedido: { total: string; fecha: string; cliente: number; comercial: number; correoElectronico: string }) {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/pedidos/', pedido);
-      return response.data;
-    } catch (error: unknown) {
-      const axiosError = error as AxiosError;
-      throw axiosError;
-    }
-  }
-
-  async enviarCorreo(pedido: { total: string; fecha: string; cliente: string; comercial: string; correoElectronico: string }) {
-    try {
+      console.log('Enviando correo con los siguientes datos:', pedido);
       const response = await axios.post('http://127.0.0.1:8000/api/send-email/', pedido);
       return response.data;
     } catch (error: unknown) {
@@ -97,6 +87,24 @@ export class VentasServiceService {
       throw axiosError;
     }
   }
+
+  async crearPedido(pedido: { 
+    fecha: string; 
+    cliente: number; 
+    comercial: number;  
+    detalles: Array<{ producto: number; cantidad: number; }>
+  }) {
+    try {
+      console.log('Enviando pedido:', pedido); // Agrega este log para verificar la estructura del pedido
+      // Realizar la solicitud POST para crear el pedido
+      const response = await axios.post('http://127.0.0.1:8000/api/pedidos/', pedido);
+      return response.data;  // Devuelve la respuesta del servidor
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      throw axiosError;  // Lanza el error si ocurre algún problema
+    }
+  }
+
 
   async fetchComerciales() {
     try {
@@ -107,4 +115,15 @@ export class VentasServiceService {
       throw axiosError;
     }
   }
+  
+  async validar(detalles: {producto: string; cantidad: number;}) {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/validar/', detalles);
+      return response.data;
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      throw axiosError;
+    }
+  }
+  
 }

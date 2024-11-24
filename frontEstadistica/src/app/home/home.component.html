@@ -10,11 +10,11 @@
         </div>
         <div class="mb-3">
           <label for="precio" class="form-label">Precio</label>
-          <input type="number" class="form-control" id="precio" [(ngModel)]="productos.precio" name="precio" type="number" placeholder="Precio" required />
+          <input type="number" class="form-control" id="precio" [(ngModel)]="productos.precio" name="precio" placeholder="Precio" required />
         </div>
         <div class="mb-3">
           <label for="cantidad" class="form-label">Cantidad</label>
-          <input type="number" class="form-control" id="cantidad" [(ngModel)]="productos.cantidad_disponible" name="cantidad" type="number" placeholder="Cantidad" required />
+          <input type="number" class="form-control" id="cantidad" [(ngModel)]="productos.cantidad_disponible" name="cantidad" placeholder="Cantidad" required />
         </div>
         <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
         <button type="submit" class="btn btn-primary w-100">Guardar</button>
@@ -26,33 +26,17 @@
       <h3>Lista de Productos</h3>
       <ul class="list-group">
         <!-- Ejemplo de producto -->
-        <li *ngFor="let producto of listProducto" class="list-group-item d-flex justify-content-between align-items-center">
-          {{ producto.nombre }} - ${{ producto.precio }} 
-          <span class="badge bg-primary rounded-pill">{{ producto.cantidad_disponible }}</span>
+        <li *ngFor="let productoList of listProducto" class="list-group-item d-flex justify-content-between align-items-center">
+          {{ productoList.nombre }}
+          <span class="badge bg-primary rounded-pill">{{ productoList.cantidad_disponible }}</span>
         </li>
-        <!-- Aquí puedes agregar más productos dinámicamente -->
       </ul>
     </div>
 
-    <!-- Gráficos -->
-    <div class="col-md-6">
-      <div class="row">
-        <!-- Gráfico de pastel -->
-        <div class="col-md-6">
-          <h3>Gráfico de Pastel</h3>
-          <div style="height: 250px; border: 1px dashed #ccc;">
-            <p class="text-center mt-5">Placeholder Gráfico de Pastel</p>
-          </div>
-        </div>
-
-        <!-- Gráfico de barras -->
-        <div class="col-md-6">
-          <h3>Gráfico de Barras</h3>
-          <div style="height: 250px; border: 1px dashed #ccc;">
-            <p class="text-center mt-5">Placeholder Gráfico de Barras</p>
-          </div>
-        </div>
-      </div>
+    <!-- Botón de gráficos -->
+    <div class="col-md-12 text-end">
+      <button type="button" (click)="buttonGraficos()" class="btn btn-primary">Gráficos</button>
     </div>
   </div>
+
 </div>

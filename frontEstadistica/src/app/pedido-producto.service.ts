@@ -25,4 +25,32 @@ export class PedidoProductoService {
       throw axiosError;
     }
   }
+
+  async totalProductos() {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/productos-mas-vendidos/');
+      return response.data;
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      throw axiosError;
+    }
+  }
+  async editProducto(producto: any) {
+    try {
+      const response = await axios.patch('http://127.0.0.1:8000/api/productos/'+producto.id+'/', producto);
+      return response.data;
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      throw axiosError;
+    }
+  }
+  async eliminarProducto(productoId: string ) {
+    try {
+      const response = await axios.delete('http://127.0.0.1:8000/api/productos/'+productoId+'/');
+      return response.data;
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      throw axiosError;
+    }
+  }
 }
