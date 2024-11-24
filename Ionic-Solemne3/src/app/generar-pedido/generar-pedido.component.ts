@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Location } from '@angular/common'; // Importar Location
 import { ActivatedRoute, Router } from '@angular/router';
 import { VentasServiceService } from '../ventas-service.service'; // Import the service
+import axios from 'axios';
 
 @Component({
   selector: 'app-generar-pedido',
@@ -21,6 +22,7 @@ export class GenerarPedidoComponent {
   productoApi: any[]= []
   cantidad: number = 0;
   errorMessage: string = ''; // Producto actualmente seleccionado
+  total: number = 0;
 
   constructor(
     private location: Location,
@@ -47,32 +49,71 @@ export class GenerarPedidoComponent {
     }
   }
 
-  agregarProducto() {
-    if (this.productoSeleccionado.id && this.cantidad > 0) {
-      const productoExistente: { productoId: string; cantidad: number; nombre: string; precio: number } | undefined = this.pedido.productos.find(
-        (producto: { productoId: string; cantidad: number; nombre: string; precio: number }) => producto.productoId === this.productoSeleccionado.id
-      );
-  
-      if (productoExistente) {
-        // Si el producto ya existe, sumamos la cantidad
-        productoExistente.cantidad += this.cantidad;
+  async agregarProducto() {
+    console.log(this.productoSeleccionado);
+    const validación = {
+      producto: this.productoSeleccionado.id,
+      cantidad: this.cantidad
+    };
+
+    try {
+      const requestValidacion = await this.ventasService.validar(validación);
+      if (requestValidacion ) {
+        this.total += requestValidacion.total; // Actualizar la variable con el total devuelto por la API
+        console.log('Total devuelto por la API:', this.total);
+
+        if (this.productoSeleccionado.id && this.cantidad > 0) {
+          const productoExistente = this.pedido.productos.find(
+            (producto: { productoId: any; }) => producto.productoId === this.productoSeleccionado.id
+          );
+
+          if (productoExistente) {
+            // Si el producto ya existe, sumamos la cantidad
+            productoExistente.cantidad += this.cantidad;
+          } else {
+            // Si no existe, lo agregamos al array de productos
+            this.pedido.productos.push({
+              productoId: this.productoSeleccionado.id,
+              cantidad: this.cantidad,
+              nombre: this.productoSeleccionado.nombre,
+              precio: this.productoSeleccionado.precio
+            });
+          }
+        }
       } else {
-        // Si no existe, lo agregamos al array de productos
-        this.pedido.productos.push({
-          productoId: this.productoSeleccionado.id,
-          cantidad: this.cantidad,
-          nombre: this.productoSeleccionado.nombre,
-          precio: this.productoSeleccionado.precio
+        const alert = await this.alertController.create({
+          header: 'Error',
+          message: 'La cantidad de productos excede el stock disponible.',
+          buttons: ['OK']
         });
+        await alert.present();
       }
+    } catch (error) {
+      console.error('Error al validar el producto:', error);
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Ocurrió un error al validar el producto.',
+        buttons: ['OK']
+      });
+      await alert.present();
     }
   }
 
   // Método para eliminar productos del pedido
   eliminarProducto(productoId: number) {
-    this.pedido.productos = this.pedido.productos.filter(
-      (producto: { productoId: number; cantidad: number; precio?: number }) => producto.productoId !== productoId
+    const productoAEliminar = this.pedido.productos.find(
+      (producto: { productoId: number; cantidad: number; precio: number }) => producto.productoId === productoId
     );
+  
+    if (productoAEliminar) {
+      // Restar el precio total del producto (precio * cantidad) del total actual
+      this.total -= productoAEliminar.precio * productoAEliminar.cantidad;
+  
+      // Eliminar el producto del pedido
+      this.pedido.productos = this.pedido.productos.filter(
+        (producto: { productoId: number; cantidad: number; precio?: number }) => producto.productoId !== productoId
+      );
+    }
   }
   async crearPedido(event: Event) {
     event.preventDefault();
@@ -88,7 +129,7 @@ export class GenerarPedidoComponent {
       }))
     };
     const pedidoCorreo = {
-      total: '0',
+      total: this.total.toString(),
       correoElectronico: this.pedido.correoElectronico,
       cliente: parseInt(this.pedido.cliente.toString(), 10),
       comercial: parseInt(this.pedido.comercial.toString(), 10),

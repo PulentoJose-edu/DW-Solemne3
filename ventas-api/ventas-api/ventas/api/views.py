@@ -139,11 +139,11 @@ class ValidadPedido(APIView):
         cantidad = request.data.get('cantidad')
         total = 0
         try:
-            producto = Producto.objects.get(producto=producto)
-            if producto.cantidad_disponible < cantidad:
+            producto = Producto.objects.get(id=producto)
+            if producto.cantidad_disponible > cantidad:
                 total += producto.precio * cantidad
                 return Response({'total': total}, status=status.HTTP_200_OK)
             else:
-                return Response({'error': 'No hay suficiente stock'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error': 'No hay suficiente stock'}, status=status.HTTP_204_NO_CONTENT)
         except Producto.DoesNotExist:
             return Response({'error': 'Producto no encontrado'}, status=status.HTTP_404_NOT_FOUND)

@@ -116,7 +116,7 @@ export class VentasServiceService {
     }
   }
   
-  async validar(detalles: {producto: string; cantidad: string;}) {
+  async validar(detalles: {producto: string; cantidad: number;}) {
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/validar/', detalles);
       return response.data;
