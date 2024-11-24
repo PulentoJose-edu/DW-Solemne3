@@ -3,9 +3,10 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Sum
 from django.contrib.auth.hashers import check_password
 from .models import Cliente, Comercial, Pedido, Producto, PedidoProducto
-from .serializers import ClienteSerializer, ComercialSerializer, PedidoSerializer, PedidoProductoSerializer, ProductoSerializer
+from .serializers import ClienteSerializer, ComercialSerializer, PedidoSerializer, PedidoProductoSerializer, ProductoSerializer, ProductoMasVendidoSerializer
 from django.http import JsonResponse
 import json
 from django.core.mail import send_mail
@@ -48,6 +49,8 @@ class PedidoListCreate(generics.ListCreateAPIView):
 class PedidoRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Pedido.objects.all()
     serializer_class = PedidoSerializer
+
+    
 
 class ComercialLogin(APIView):
     def post(self, request):
@@ -109,26 +112,14 @@ class EmailAPIView(APIView):
             error_message = str(e)
             return Response({'message': error_message}, status=status.HTTP_400_BAD_REQUEST)
         
+def obtener_productos_mas_vendidos():
+    productos_mas_vendidos = Producto.objects.annotate(
+        total_vendido=Sum('pedidoproducto__cantidad')  # Sumar todas las cantidades asociadas al producto
+    ).order_by('-total_vendido')[:10]  # Limitar a los 10 más vendidos
+    return productos_mas_vendidos
 
-class ValidacionInventario(APIView):
-    def post(self, request):
-        # Obtiene los datos enviados a la API
-        id = request.data.get('id')  # ID del producto
-        precio = request.data.get('precio')
-        cantidad = request.data.get('cantidad')  # Cantidad solicitada
-
-        try:
-            # Busca el producto por ID
-            producto = Producto.objects.get(id=id)
-            pedido = Pedido.objects.get(id=id)
-            pedidoproducto = PedidoProducto.objects.get(id=pedido)
-        except Producto.DoesNotExist:
-            return Response({"error": "Producto no encontrado."},status=status.HTTP_404_NOT_FOUND,)
-
-        # Verifica si hay suficiente inventario
-        if producto.cantidad_disponible >= int(cantidad):
-            producto.restarCantidad(int(cantidad))
-            pedido.calcular_total()
-            return Response({"mensaje": "Hay suficiente inventario."},status=status.HTTP_200_OK,)
-        else:
-            return Response({"error": "Inventario insuficiente."},status=status.HTTP_400_BAD_REQUEST,)
+class ProductosMasVendidosAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        productos_mas_vendidos = obtener_productos_mas_vendidos()
+        serializer = ProductoMasVendidoSerializer(productos_mas_vendidos, many=True)
+        return Response(serializer.data)

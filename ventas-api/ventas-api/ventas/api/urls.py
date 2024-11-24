@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ClienteListCreate, ClienteRetrieveUpdateDestroy, ProductoRetrieveUpdateDestroy , ComercialListCreate, ComercialRetrieveUpdateDestroy, PedidoListCreate, PedidoRetrieveUpdateDestroy, ComercialLogin, get_comercial_id, EmailAPIView, ProductoListCreate, PedidoProductoListCreate, PedidoProductoRetrieveUpdateDestroy, ValidacionInventario
+from .views import ClienteListCreate, ClienteRetrieveUpdateDestroy, ProductoRetrieveUpdateDestroy , ComercialListCreate, ComercialRetrieveUpdateDestroy, PedidoListCreate, PedidoRetrieveUpdateDestroy, ComercialLogin, ProductosMasVendidosAPIView, get_comercial_id, EmailAPIView, ProductoListCreate, PedidoProductoListCreate, PedidoProductoRetrieveUpdateDestroy, PedidoListCreate
 
 urlpatterns = [
     path('clientes/', ClienteListCreate.as_view(), name='cliente-list-create'),
@@ -14,5 +14,6 @@ urlpatterns = [
     path('productos/', ProductoListCreate.as_view(), name='producto-list-create'),
     path('productos/<int:pk>/', ProductoRetrieveUpdateDestroy.as_view(), name='producto-detail'),
     path('pedido-productos/', PedidoProductoListCreate.as_view(), name= 'pedido-producto-list-create' ),
-    path('validacion/', ValidacionInventario.as_view(), name= 'validacion' )
+    path('pedido-productos/<int:pk>/', PedidoProductoRetrieveUpdateDestroy.as_view(), name= 'pedido-producto-detail' ),
+    path('productos-mas-vendidos/', ProductosMasVendidosAPIView.as_view(), name='productos-mas-vendidos'),
 ]
