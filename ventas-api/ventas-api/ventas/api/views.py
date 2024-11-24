@@ -99,15 +99,23 @@ def get_comercial_id(request):
         return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 class EmailAPIView(APIView):
-    def post(resquest):
-        try: 
-            cliente_nombre = Cliente.objects.get(id= resquest.data.get('cliente'))    
-            comercial_nombre = Comercial.objects.get(id= resquest.data.get('comercial'))
-            to_email = resquest.data.get('correoElectronico')
+    def post(self, request):
+        try:
+            print("Datos recibidos:", request.data)
+            cliente = Cliente.objects.get(id=request.data.get('cliente'))
+            comercial = Comercial.objects.get(id=request.data.get('comercial'))
+            to_email = request.data.get('correoElectronico')
             subject = "Pedido de compra"
-            message = f"Este es un resumen de compra\n Nombre: {cliente_nombre.nombre}\n Comercial: {comercial_nombre.nombre}\n Fecha: {resquest.data.get('fecha')}\n Total: {resquest.data.get('total')}\n"
+            message = (
+                f"Este es un resumen de compra\n"
+                f"Nombre: {cliente.nombre}\n"
+                f"Comercial: {comercial.nombre}\n"
+                f"Fecha: {request.data.get('fecha')}\n"
+                f"Total: {request.data.get('total')}\n"
+            )
+            
             send_mail(subject, message, None, [to_email])
-            return Response({'message' : 'Correo Enviado con Exito'}, status=status.HTTP_200_OK)
+            return Response({'message': 'Correo Enviado con Exito'}, status=status.HTTP_200_OK)
         except Exception as e:
             error_message = str(e)
             return Response({'message': error_message}, status=status.HTTP_400_BAD_REQUEST)
@@ -123,3 +131,19 @@ class ProductosMasVendidosAPIView(APIView):
         productos_mas_vendidos = obtener_productos_mas_vendidos()
         serializer = ProductoMasVendidoSerializer(productos_mas_vendidos, many=True)
         return Response(serializer.data)
+    
+
+class ValidadPedido(APIView):
+    def post(self, request):
+        producto = request.data.get('producto')
+        cantidad = request.data.get('cantidad')
+        total = 0
+        try:
+            producto = Producto.objects.get(producto=producto)
+            if producto.cantidad_disponible < cantidad:
+                total += producto.precio * cantidad
+                return Response({'total': total}, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'No hay suficiente stock'}, status=status.HTTP_400_BAD_REQUEST)
+        except Producto.DoesNotExist:
+            return Response({'error': 'Producto no encontrado'}, status=status.HTTP_404_NOT_FOUND)

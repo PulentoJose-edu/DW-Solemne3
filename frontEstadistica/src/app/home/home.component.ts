@@ -78,5 +78,61 @@ export class HomeComponent {
       console.error('Error al llamar a la API', error);
     }
   }
+
+  public configLine: any = {
+    type: 'line',
+    data: {
+      labels: [], 
+      datasets: [
+        {
+          label: 'Cantidad de pedidos',
+          data: [], 
+          backgroundColor: 'blue',
+          fill: false,
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.1
+        },
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: 'Pedidos por Año'
+        }
+      }
+    },
+  };
+
+  public configPie: any = {
+    type: 'pie',
+    labels: 'Id de Clientes',  
+    data: {
+      labels: [], 
+      datasets: [
+        {
+          label: 'Cantidad de Pedidos',
+          data: [], 
+          backgroundColor: ['red', 'blue', 'green', 'yellow', 'orange', 'pink', 'black'],
+        },
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: 'Id de Clientes'
+        }
+      }
+    },
+  };  
 }
 

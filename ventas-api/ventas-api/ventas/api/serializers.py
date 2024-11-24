@@ -22,7 +22,7 @@ class ProductoSerializer(serializers.ModelSerializer):
 class PedidoProductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = PedidoProducto
-        fields = ['producto', 'cantidad','pedido']
+        fields = ['producto', 'cantidad']
 class PedidoSerializer(serializers.ModelSerializer):
     detalles = PedidoProductoSerializer(many=True, write_only=True)  # Para recibir datos anidados
     productos = ProductoSerializer(many=True, read_only=True)  # Solo lectura para incluir los productos en la respuesta
@@ -32,6 +32,7 @@ class PedidoSerializer(serializers.ModelSerializer):
         fields = ['id', 'productos', 'detalles', 'total', 'fecha', 'cliente', 'comercial']
 
     def create(self, validated_data):
+        print("Datos validados:", validated_data) 
         # Extraemos los detalles del pedido
         detalles_data = validated_data.pop('detalles')
         pedido = Pedido.objects.create(**validated_data)
